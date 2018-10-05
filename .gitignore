@@ -1,4 +1,4 @@
 .ipynb_checkpoints/
 Platzi Data.ipynb
 __pycache__
-
+*.csv
