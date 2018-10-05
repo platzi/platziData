@@ -1,11 +1,16 @@
 import argparse
 import logging
 logging.basicConfig(level=logging.INFO)
+import re
+
+from requests.exceptions import HTTPError
+from urllib3.exceptions import MaxRetryError
 
 import news_page_objects as news
 from common import config
 
-
+is_well_formed_url= re.compile(r'^https?://.+/.+$') # i.e. https://www.somesite.com/something
+is_root_path = re.compile(r'^/.+$') # i.e. /some-text
 logger = logging.getLogger(__name__)
 
 
@@ -15,17 +20,43 @@ def _news_scraper(news_site_uid):
     logging.info('Beginning scraper for {}'.format(host))
     logging.info('Finding links in homepage...')
 
-    article_links = _find_article_links_in_homepage(news_site_uid)
+    homepage = news.HomePage(news_site_uid, host)
 
-    logging.info('{} article links found in homepage'.format(len(article_links)))
-    for link in article_links:
-        print(link)
+    articles = []
+    for link in homepage.article_links:
+        article = _fetch_article(news_site_uid, host, link)
+
+        if article:
+            logger.info('Article fetched!')
+            articles.append(article)
+            print(article.title)
+
+    print(len(articles))
 
 
-def _find_article_links_in_homepage(news_site_uid):
-    homepage = news.HomePage(news_site_uid)
+def _fetch_article(news_site_uid, host, link):
+    logger.info('Start fetching article at {}'.format(link))
 
-    return homepage.article_links
+    article = None
+    try:
+        article = news.ArticlePage(news_site_uid, _build_link(host, link))
+    except (HTTPError, MaxRetryError) as e:
+        logger.warn('Error while fetching article!', exc_info=False)
+
+    if article and not article.body:
+        logger.warn('Invalid article. There is no body.')
+        return None
+
+    return article
+
+
+def _build_link(host, link):
+    if is_well_formed_url.match(link):
+        return link
+    elif is_root_path.match(link):
+        return '{host}{uri}'.format(host=host, uri=link)
+    else:
+        return '{host}/{uri}'.format(host=host, uri=link)
 
 
 if __name__ == '__main__':
