@@ -8,8 +8,13 @@ news_sites:
   elpais:
     url: https://elpais.com
     queries:
-      homepage_article_links: ''
-      article_body: ''
-      article_title: ''
-      
+      homepage_article_links: '.articulo-titulo a'
+      article_body: '.articulo-cuerpo'
+      article_title: '.articulo-titulo' 
+  washingtonpost:
+    url: https://www.washingtonpost.com
+    queries:
+      homepage_article_links: '.headline a'
+      article_body: '.topper-headline h1'
+      article_title: 'article.paywall'
 
