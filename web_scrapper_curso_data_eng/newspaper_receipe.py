@@ -25,6 +25,9 @@ def main(filename):
     df = _remove_new_lines_from_body(df)
     df = _tokenize_column(df, 'title')
     df = _tokenize_column(df, 'body')
+    df = _remove_duplicate_entries(df, 'title')
+    df = _drop_rows_with_missing_values(df)
+    _save_data(df, filename)
 
     return df
 
@@ -116,6 +119,24 @@ def _tokenize_column(df, column_name):
     return df
 
 
+def _remove_duplicate_entries(df, column_name):
+    logger.info('Removing duplicate entries')
+    df.drop_duplicates(subset=[column_name], keep='first', inplace=True)
+
+    return df
+
+
+def _drop_rows_with_missing_values(df):
+    logger.info('Dropping rows with missing values')
+    return df.dropna()
+
+
+def _save_data(df, filename):
+    clean_filename = 'clean_{}'.format(filename)
+    logger.info('Saving data at location: {}'.format(clean_filename))
+    df.to_csv(clean_filename)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('filename',
@@ -125,5 +146,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     df = main(args.filename)
-    print(df['n_tokens_body'])
 
