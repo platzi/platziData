@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import logging
 logging.basicConfig(level=logging.INFO)
 from urllib.parse import urlparse
@@ -18,6 +19,8 @@ def main(filename):
     df = _add_newspaper_uid_column(df, newspaper_uid)
     df = _extract_host(df)
     df = _fill_missing_titles(df)
+    df = _generate_uids_for_rows(df)
+    df = _remove_new_lines_from_body(df)
 
     return df
 
@@ -61,6 +64,33 @@ def _fill_missing_titles(df):
                       )
 
     df.loc[missing_titles_mask, 'title'] = missing_titles.loc[:, 'missing_titles']
+
+    return df
+
+
+def _generate_uids_for_rows(df):
+    logger.info('Generating uids for each row')
+    uids = (df
+            .apply(lambda row: hashlib.md5(bytes(row['url'].encode())), axis=1)
+            .apply(lambda hash_object: hash_object.hexdigest())
+            )
+
+    df['uid'] = uids
+
+    return df.set_index('uid')
+
+
+def _remove_new_lines_from_body(df):
+    logger.info('Remove new lines from body')
+
+    stripped_body = (df
+                     .apply(lambda row: row['body'], axis=1)
+                     .apply(lambda body: list(body))
+                     .apply(lambda letters: list(map(lambda letter: letter.replace('\n', ' '), letters)))
+                     .apply(lambda letters: ''.join(letters))
+                    )
+
+    df['body'] = stripped_body
 
     return df
 
