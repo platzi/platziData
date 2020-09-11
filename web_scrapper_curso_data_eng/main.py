@@ -87,4 +87,3 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     _news_scraper(args.news_site)
-

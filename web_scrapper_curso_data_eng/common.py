@@ -1,8 +1,6 @@
 import yaml
 
-
 __config = None
-
 
 def config():
     global __config
@@ -11,4 +9,3 @@ def config():
             __config = yaml.load(f)
 
     return __config
-
