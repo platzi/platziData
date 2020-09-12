@@ -11,9 +11,11 @@ news_sites:
     url: https://www.mintic.gov.co/portal/inicio/
     queries:
       homepage_article_links: '.titulo a'
-      article_body: '.cid-507 li'
+      article_body: '.articulocompleto p'
       article_title: '.titulo h1'
-  # platzi:
-  #   url: https://www.platzi.com
-  #   queries:
-  #     homepage_article_links: '.RecentCourses-item a'
+  eltiempo:
+    url: https://www.eltiempo.com
+    queries:
+      homepage_article_links: '.title-container a'
+      article_body: '.contenido'
+      article_title: '.titulo-principal-bk h1'
