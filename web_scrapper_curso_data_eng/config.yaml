@@ -5,11 +5,15 @@ news_sites:
     url: https://www.semana.com/
     queries:
       homepage_article_links: '.card-body a'
+      article_body: '.section sp-8 p'
+      article_title: '.header-collaborative h1'
   MinTIC:
     url: https://www.mintic.gov.co/portal/inicio/
     queries:
-      homepage_article_links: '#recuadros_articulo_9473 div a'
-  platzi:
-    url: https://www.platzi.com
-    queries:
-      homepage_article_links: '.RecentCourses-item a'
+      homepage_article_links: '.titulo a'
+      article_body: '.cid-507 li'
+      article_title: '.titulo h1'
+  # platzi:
+  #   url: https://www.platzi.com
+  #   queries:
+  #     homepage_article_links: '.RecentCourses-item a'
