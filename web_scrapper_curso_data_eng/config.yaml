@@ -1,19 +1,15 @@
+# configuración del diccionario de fuentes de información, enlaces y selectores html.
+
 news_sites:
-  eluniversal:
-    url: http://www.eluniversal.com.mx
+  semana:
+    url: https://www.semana.com/
     queries:
-      homepage_article_links: '.field-content a'
-      article_body: '.field-name-body'
-      article_title: '.pane-content h1'
-  elpais:
-    url: https://elpais.com
+      homepage_article_links: '.card-body a'
+  MinTIC:
+    url: https://www.mintic.gov.co/portal/inicio/
     queries:
-      homepage_article_links: '.articulo-titulo a'
-      article_body: '.articulo-cuerpo'
-      article_title: '.articulo-titulo' 
-  washingtonpost:
-    url: https://www.washingtonpost.com
+      homepage_article_links: '#recuadros_articulo_9473 div a'
+  platzi:
+    url: https://www.platzi.com
     queries:
-      homepage_article_links: '.headline a'
-      article_body: '.topper-headline h1'
-      article_title: 'article.paywall'
+      homepage_article_links: '.RecentCourses-item a'
