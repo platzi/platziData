@@ -28,7 +28,7 @@ def _news_scraper(news_site_uid):
         if article:
             logger.info('¡Articulo enlazado!')
             articles.append(article)
-            break #Opcional para tomar solo el primer articulo
+            #break #Opcional para tomar solo el primer articulo
 
     _save_articles(news_site_uid, articles)
 
